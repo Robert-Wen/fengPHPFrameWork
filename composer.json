@@ -1,0 +1,13 @@
+{
+    "name": "robert-wen/fengphpframework",
+    "description": "php diy framework",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Robert-Wen",
+            "email": "fengze_wen@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
