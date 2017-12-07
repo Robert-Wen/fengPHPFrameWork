@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6002ab6-9a93-4987-b460-5bdebe187820" name="Default" comment="完成了MVC框架架构中的单入口文件、引导类和控制器的测试">
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -52,6 +53,7 @@
         <option value="$PROJECT_DIR$/fengphp/core/Controller.php" />
         <option value="$PROJECT_DIR$/system/helper.php" />
         <option value="$PROJECT_DIR$/app/home/controller/Article.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -93,6 +95,11 @@
             <path>
               <item name="fengphp" type="b2602c69:ProjectViewProjectNode" />
               <item name="fengphp" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="fengphp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="fengphp" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="runtime" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
@@ -147,12 +154,12 @@
       <workItem from="1512541340074" duration="21058000" />
       <workItem from="1512573047942" duration="1627000" />
       <workItem from="1512606749639" duration="519000" />
-      <workItem from="1512654693862" duration="20000" />
+      <workItem from="1512654693862" duration="403000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31661000" />
+    <option name="totallyTimeSpent" value="32044000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -543,7 +550,8 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="25">
-          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <caret line="1" column="22" lean-forward="true" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
