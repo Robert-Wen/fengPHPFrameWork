@@ -1,6 +1,6 @@
 {
     "name": "robert-wen/fengphpframework",
-    "description": "php diy framework",
+    "description": "php DIY framework",
     "type": "project",
     "authors": [
         {
@@ -9,5 +9,12 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {}
+    "require": {},
+    "autoload": {
+        "files": ["system/helper.php"],
+        "psr-4":  {
+            "fengphp\\": "fengphp\\",
+            "app\\": "app\\"
+        }
+    }
 }
