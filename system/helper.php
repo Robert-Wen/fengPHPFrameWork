@@ -59,8 +59,8 @@
 		/**
 		 * 功能：将 '/模块/控制器/方法' 形式的字符串转化为合法的形式 '?s=模块/控制器/方法'，
 		 * 提供了访问当前模块或者当前控制器中的方法的便利
-		 * @param $url
-		 * @return mixed
+		 * @param $url          '模块/控制器/方法' 形式的字符串
+		 * @return mixed        '?s=模块/控制器/方法' 形式的字符串
 		 */
 		function u ($url = '') {
 //			prePrint($url);die();
@@ -108,6 +108,63 @@
 
 			//动作：返回拼接好的合法url请求
 			return $res;
+		}
+	}
+
+	if (!function_exists('c')) {
+		//c 助手函数未定义时...
+
+		function c ($config = '') {
+			//动作：判断是否指定了配置信息
+			//功能：如果指定配置信息则进行字符串的拆分；否则直接返回 null
+			if ($config) {
+				//指定了配置信息...
+
+				//1.将 $config 拆分成配置文件名和配置项名
+				$info = explode('.', $config);
+
+				//2.判断是否同时指定配置文件和配置项
+				if (count($info) >= 2 && $info[0] && $info[1]) {
+					//同时指定了配置文件和配置项...
+
+					$file = '../system/config/' . $info[0] . '.php';
+
+					//2.加载指定的配置文件并读取出所有的配置项
+					//动作：判断指定配置文件是否存在
+					//功能：如果存在则加载配置文件；否则返回 null
+					if (is_file($file)) {
+						//配置文件存在...
+
+						//动作：加载配置文件，读取配置项
+						$data = include $file;
+					} else {
+						//配置文件不存在...
+
+						return null;
+					}
+
+					//3.在读取出来的所有配置项中找出指定的配置项的值
+					//动作：判断指定配置项是否存在
+					if (isset($data[$info[1]])) {
+						//配置项存在...
+
+						//动作：返回配置项的值
+						return $data[$info[1]];
+					} else {
+						//配置项不存在...
+
+						return null;
+					}
+				} else {
+					//配置信息不完整...
+
+					return null;
+				}
+			} else {
+				//没有指定配置信息...
+
+				return null;
+			}
 		}
 	}
 
