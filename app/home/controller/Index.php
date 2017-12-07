@@ -1,8 +1,10 @@
 <?php
 namespace app\home\controller;
 
-class Index {
+use fengphp\core\controller\Controller;
+
+class Index extends Controller {
 	public function index () {
-		echo 'home首页 <br />';
+		echo '网站首页';
 	}
 }
