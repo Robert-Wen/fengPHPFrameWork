@@ -108,11 +108,11 @@ Boot::run();
 ````
 class Boot {
     public static function run() {
-        //第1步：初始化框架环境
-        self::init();
-        
-        //第2步：错误处理
+        //第1步：错误处理
         self::handler();
+        
+        //第2步：初始化框架环境
+        self::init();
         
         //第3步：运行应用程序，将url请求路由到指定的模块/控制器/方法
         self::appRun();
@@ -124,6 +124,12 @@ class Boot {
     }
     public static function handler() {
         //进行错误的处理
+        //1.首先到 packagist 上面找到 flip/whoops
+        //2.在 phpStorm 的命令行输入 composer require flip/whoops 将下载到目录中
+        //3.在这个方法中粘贴下面的代码就行了
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+        $whoops->register();
     }
     public static function appRun() {
         //1.接收用户的url请求参数

@@ -9,5 +9,7 @@
 		//用户名
 		"user" => "root",
 		//密码
-		"password" => "root"
+		"password" => "root",
+		//与数据库进行通信的编码
+		"charset" => "utf8"
 	];
