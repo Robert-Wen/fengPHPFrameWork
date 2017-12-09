@@ -3,11 +3,11 @@ namespace fengphp\core;
 
 	class Boot {
 		public static function run() {
-			//第1步：初始化框架环境
-			self::init();
-
-			//第2步：错误处理
+			//第1步：错误处理
 			self::handler();
+
+			//第2步：初始化框架环境
+			self::init();
 
 			//第3步：运行应用程序，将url请求路由到指定的模块/控制器/方法
 			self::appRun();
@@ -38,6 +38,9 @@ namespace fengphp\core;
 
 		public static function handler() {
 			//1.进行错误的处理
+			$whoops = new \Whoops\Run;
+			$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+			$whoops->register();
 		}
 
 		public static function appRun() {

@@ -9,7 +9,9 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
+    "require": {
+        "filp/whoops": "^2.0@dev"
+    },
     "autoload": {
         "files": ["system/helper.php"],
         "psr-4":  {

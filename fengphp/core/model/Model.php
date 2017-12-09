@@ -7,7 +7,7 @@ use PDO;
 
 	class Model {
 		/*
-		 * 动作：声明Model类的属性
+		 * 动作：声明Model类的属性，这些属性只在 Model 类中使用，因此声明为private
 		 */
 		//动作（功能）：将 $pdo 属性声明为静态是为了在整个PHP脚本中只进行一次数据库的连接，避免重复的连接
 		private static $pdo = null;
@@ -17,6 +17,17 @@ use PDO;
 		private static $user = '';          //数据库用户
 		private static $password = '';      //数据库密码
 
+		private $field = '';       //查询字段
+		private $table = '';        //表名
+		private $where = '';        //where条件
+		private $group = '';        //group by 字段
+		private $having = '';       //having条件
+		private $order = '';        //order by字段和升降序
+		private $limitCount = '';    //limit部分，仅仅用于delete
+		private $limit = '';        //limit部分，仅仅用于select
+		private $values = '';       //values部分，仅仅用于insert
+		private $set = '';          //set部分，仅仅用于update
+
 		public function __construct() {
 			//动作：从数据库配置文件中读取数据库连接的所有配置项
 			$driver = c ('database.driver');
@@ -24,6 +35,7 @@ use PDO;
 			$dbname = c ('database.dbname');
 			$user = c ('database.user');
 			$password = c ('database.password');
+			$charset = c ('database.charset');
 
 			//动作：判断当前数据库连接请求和先前的数据库连接请求是不是同一个数据库连接
 			//功能：如果是同一个数据库连接则尝试使用先前的数据库连接；
@@ -31,6 +43,8 @@ use PDO;
 			if ($driver == self::$driver && $host == self::$host && $dbname == self::$dbname && $user == self::$user && $password == self::$password && !is_null(self::$pdo)) {
 				//当前数据库连接和先前数据库连接是同一个连接的情况...
 
+				//动作（功能）：通过后期静态绑定获得实例化时的类名，并且转化为表名
+				$this -> table = ' ' . strtolower(ltrim(strrchr(get_called_class(), '\\'), '\\'));
 //				echo '老朋友，欢迎回来' . '<br />';
 				//什么都不做，因为数据库连接早就已经存在了
 			} else {
@@ -54,7 +68,7 @@ use PDO;
 
 					//第4步
 					//动作：用 self::$pdo -> query() 设置客户端于SQL服务器通信过程中的字符集
-					self::$pdo -> query('set names utf8');
+					self::$pdo -> query('set names ' . $charset);
 
 					//到这里，一个正常的数据库连接就已经成功了...
 
@@ -64,7 +78,8 @@ use PDO;
 					self::$dbname = $dbname;
 					self::$user = $user;
 					self::$password = $password;
-
+					//动作（功能）：通过后期静态绑定获得实例化时的类名，并且转化为表名
+					$this -> table = ' ' . strtolower(ltrim(strrchr(get_called_class(), '\\'), '\\'));
 				} catch (Exception $e) {
 					//动作（功能）：输出接收到的异常中的错误信息并且中止PHP脚本的执行
 					die($e -> getMessage());
@@ -72,7 +87,12 @@ use PDO;
 			}
 		}
 
-		public function q($sql) {
+		/**
+		 * 功能：支持直接输入SQL语句进行查询，这个方法是所有询相关方法的基础
+		 * @param $sql      SQL语句
+		 * @return array    查询的数据，是一个二维数组
+		 */
+		public function q ($sql) {
 			//动作：将查询数据库的代码放在try{}catch(){}块中，PDO方法操作失败时就会抛出一个异常
 			try {
 				//动作（功能）：将SQL语句发送到SQL服务器中执行，以 PDOStatement对象 的形式返回数据查询结果
@@ -86,7 +106,12 @@ use PDO;
 			}
 		}
 
-		public function e($sql) {
+		/**
+		 * 功能：支持直接输入SQL语句对表进行操作，这个方法是所有数据操作方法（增删改）的基础
+		 * @param $sql      SQL语句
+		 * @return int      受影响的数据的条数
+		 */
+		public function e ($sql) {
 			//动作：将查询数据库的代码放在try{}catch(){}块中，PDO方法操作失败时就会抛出一个异常
 			try {
 				//动作（功能）：将SQL语句发送到SQL服务器中执行，返回受影响的数据的行数
@@ -95,5 +120,259 @@ use PDO;
 				//动作（功能）：输出捕获到的异常中的错误信息并中止PHP脚本的执行
 				die($e -> getMessage());
 			}
+		}
+
+		/**
+		 * 功能：指定要操作的数据表
+		 * @param $table        表名
+		 * @return $this        对象
+		 */
+		public function table ($table) {
+			//动作（功能）：指定数据库中的表名
+			$this -> table = ' ' . $table;
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：指定 insert, select 语句要使用的字段
+		 * @param $field        字段
+		 * @return $this        对象
+		 */
+		public function field ($field) {
+			//动作（功能）：指定select, insert中要用到的字段
+			$this -> field = $field;
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：构造SQL语句的 where 条件部分
+		 * @param $where    where 条件
+		 * @return $this    对象
+		 */
+		public function where ($where) {
+			//动作（功能）：指定where条件部分
+			//动作：在 $where 不为空时才需要构造SQL where条件部分
+			if ($where) {
+				$this -> where = ' where ' . $where;
+			}
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：构造SQL语句的 group by 部分
+		 * @param $group    group by 字段
+		 * @return $this    对象
+		 */
+		public function group ($group) {
+			//动作（功能）：指定group by部分
+			//动作：在 $group 不为空时才需要构造SQL group by部分
+			if ($group) {
+				$this -> group = ' group by ' . $group;
+			}
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：构造SQL语句的 having 部分
+		 * @param $having       having条件
+		 * @return $this        对象
+		 */
+		public function having ($having) {
+			//动作（功能）：指定having条件部分
+			//动作：在 $having 不为空时才需要构造SQL having条件部分
+			if ($having) {
+				$this -> having = ' having ' . $having;
+			}
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：指定SQL语句的 order by 部分
+		 * @param $order        order by的内容
+		 * @param bool $asc     true为升序，false为降序
+		 * @return $this        对象
+		 */
+		public function order ($order, $asc = true) {
+			//动作（功能）：指定order by部分
+			//动作：在 $order 不为空时才需要构造SQL order by部分
+			if ($order) {
+				$this -> order = ' order by ' . $order . ($asc ? '' : ' desc');
+			}
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：构造SQL语句的limit部分
+		 * @param $offset       数据偏移量
+		 * @param $count        数据条数
+		 * @return $this        对象，用于支持链式操作
+		 */
+		public function limit ($count, $offset = 0) {
+			//动作（功能）：构造limit部分，用于delete语句
+			$this -> limitCount = ' limit ' . $count;
+			//动作（功能）：构造limit部分，用于select语句
+			$this -> limit = ' limit ' . $offset . ',' . $count;
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：指定values部分的值。
+		 * @param array ...$valuesArr   可变数量参数，每个参数必须是一维数组，数组元素的值就是要插入数据库的值
+		 * @return $this                对象，支持链式操作
+		 */
+		public function values (...$valuesArr) {
+			//功能：$valuesStr表示$valuesArr的字符串形式
+			$valuesStr = ' values';
+
+			//动作：遍历二维数组，将$valuesArr
+			foreach ($valuesArr as $valueArr) {
+				//功能：$valueStr表示$valueArr的字符串形式
+				$valueStr = '';
+				foreach ($valueArr as $v) {
+					//动作：判断$v是否是字符串，如果是则要加引号；否则不加引号
+					$valueStr .= (is_string($v) ? "'{$v}'" : $v) . ',';
+				}
+				//功能：将valueStr后面多余的 ',' 去除掉
+				$valueStr = rtrim($valueStr, ',');
+				$valuesStr .= '(' . $valueStr . '),';
+			}
+
+			//功能：将valuesStr后面多余的 ',' 去除掉
+			$valuesStr = rtrim($valuesStr, ',');
+
+			//动作（功能）：用属性$this -> values保存指定的values部分
+			$this -> values = $valuesStr;
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：构造update语句set部分
+		 * @param $data     set部分数据，关联数组形式，键名表示要更新的字段，键值表示要更新的值
+		 * @return $this    对象，用于支持链式操作
+		 */
+		public function set ($data) {
+			$set = ' set ';
+
+			//动作：遍历数组$data
+			foreach ($data as $k => $v) {
+				//动作：将键名和键值拼接成$k=$v的形式，如果$v是字符串则需要加引号；否则不加引号
+				$set .= $k . '=' . (is_string($v) ? "'{$v}'" : $v) . ',';
+			}
+
+			//动作（功能）：去除后面多余的逗号后保存到 $this -> set 属性中
+			$this -> set = rtrim($set, ',');
+
+			//动作：返回一个对象 $this 以支持链式操作
+			return $this;
+		}
+
+		/**
+		 * 功能：将先前指定的SQL片段全部清空，避免先前的设置干扰到后面的操作，仅仅保留 table 这个设置
+		 */
+		private function resetSQL () {
+			 //动作（功能）：将之前指定的SQL片段全部清空
+			$this -> field = '';
+			$this -> where = '';
+			$this -> group = '';
+			$this -> having = '';
+			$this -> order = '';
+			$this -> limit = '';
+			$this -> limitCount = '';
+		}
+
+		/**
+		 * 功能：将select语句的多个片段拼接在一起，然后执行查询
+		 */
+		public function select () {
+			//1.将SQL语句的多个片段拼接在一起
+			$sql = 'select ' . ($this -> field ? $this -> field : '*') .
+				' from ' . $this -> table .
+				$this -> where .
+				$this -> group .
+				$this -> having .
+				$this -> order .
+				$this -> limit . ';';
+
+			//2.清空先前设置好的SQL片段，仅仅保留设置好的 table
+			$this -> resetSQL();
+
+			//3.执行SQL语句，返回查询的结果
+			return $this -> q ($sql);
+		}
+
+		/**
+		 * 功能：将insert语句的多个片段拼接在一起，然后执行查询
+		 */
+		public function insert () {
+			//动作（功能）：拼接字段
+			$field = $this -> field ? ('(' . $this -> field . ')') : '';
+			//动作（功能）：拼接insert语句
+			$sql = 'insert into ' . $this -> table . $field . $this -> values . ';';
+
+			//2.清空先前设置好的SQL片段，仅仅保留设置好的 table
+			$this -> resetSQL();
+
+			//动作（功能）：执行SQL语句，返回受影响的数据条数
+			return $this -> e ($sql);
+		}
+
+		/**
+		 * 功能：将update语句的多个片段拼接在一起，然后执行查询
+		 */
+		public function update () {
+			//动作：判断是否有where字段，如果没有则不作更新；有则作出更新
+			if ($this -> where == '') {
+				return false;
+			}
+
+			//动作（功能）：拼接update语句
+			$sql = 'update ' . $this -> table .
+				$this -> set .
+				$this -> where . ';';
+
+			//2.清空先前设置好的SQL片段，仅仅保留设置好的 table
+			$this -> resetSQL();
+
+			//动作（功能）：执行SQL语句，返回受影响的数据条数
+			return $this -> e ($sql);
+		}
+
+		/**
+		 * 功能：将delete语句的多个片段拼接在一起，然后执行查询
+		 * @return bool|int     成功返回操作影响的数据条数；失败返回false
+		 */
+		public function delete () {
+			//动作：判断是否有where字段，如果没有则不作删除；有则作出删除
+			if ($this -> where == '') {
+				return false;
+			}
+
+			//动作（功能）：构造delete语句
+			$sql = 'delete from' . $this -> table .
+				$this -> where .
+				$this -> order .
+				$this -> limitCount . ';';
+
+			//2.清空先前设置好的SQL片段，仅仅保留设置好的 table
+			$this -> resetSQL();
+
+			//动作（功能）：执行SQL语句，返回受影响的数据条数
+			return $this -> e ($sql);
 		}
 	}
