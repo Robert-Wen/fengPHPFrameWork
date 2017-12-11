@@ -105,7 +105,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MyPHP" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
     <property name="SearchEverywhereHistoryKey" value="{&#9;null&#9;null" />
   </component>
@@ -154,12 +154,12 @@
       <workItem from="1512719168271" duration="5702000" />
       <workItem from="1512796165499" duration="16853000" />
       <workItem from="1512952106064" duration="93000" />
-      <workItem from="1512952283272" duration="2186000" />
+      <workItem from="1512952283272" duration="2693000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56878000" />
+    <option name="totallyTimeSpent" value="57385000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -172,6 +172,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1633888" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32840723" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -509,7 +510,7 @@
         <state relative-caret-position="200">
           <caret line="8" column="51" lean-forward="false" selection-start-line="8" selection-start-column="51" selection-end-line="8" selection-end-column="51" />
           <folding>
-            <element signature="e#38#77#0#PHP" expanded="true" />
+            <element signature="e#38#77#0#PHP" expanded="false" />
           </folding>
         </state>
       </provider>
