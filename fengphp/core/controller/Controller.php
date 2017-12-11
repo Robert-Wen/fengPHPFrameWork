@@ -23,6 +23,9 @@ class Controller {
 		//动作：加载模板文件
 		//功能：渲染模板
 		include_once './view/message.php';
+
+		//动作：中止PHP脚本的继续运行
+		die ();
 	}
 
 	/**
