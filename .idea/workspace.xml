@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6002ab6-9a93-4987-b460-5bdebe187820" name="Default" comment="完成了MVC框架架构中的单入口文件、引导类和控制器的测试">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change beforePath="$PROJECT_DIR$/app/home/controller/Index.php" afterPath="$PROJECT_DIR$/app/home/controller/Index.php" />
-      <change beforePath="$PROJECT_DIR$/app/home/view/index/index.php" afterPath="$PROJECT_DIR$/app/home/view/index/index.php" />
-      <change beforePath="$PROJECT_DIR$/fengphp/core/model/Model.php" afterPath="$PROJECT_DIR$/fengphp/core/model/Model.php" />
-    </list>
+    <list default="true" id="b6002ab6-9a93-4987-b460-5bdebe187820" name="Default" comment="完成了MVC框架架构中的单入口文件、引导类和控制器的测试" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -160,12 +154,12 @@
       <workItem from="1512719168271" duration="5702000" />
       <workItem from="1512796165499" duration="16853000" />
       <workItem from="1512952106064" duration="93000" />
-      <workItem from="1512952283272" duration="1874000" />
+      <workItem from="1512952283272" duration="2186000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56566000" />
+    <option name="totallyTimeSpent" value="56878000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
