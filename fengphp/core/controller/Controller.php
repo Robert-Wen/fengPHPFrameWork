@@ -37,7 +37,7 @@ class Controller {
 		//动作：判断是否指定跳转的url
 		if ($url) {
 			//动作（功能）：指定了要跳转的url，生成跳转到指定页面的js代码。。。
-			$this -> url = 'location.href="' . $url . '";';
+			$this -> url = "location.href='{$url}';";
 		}
 
 		//动作（功能）：返回当前的对象$this，用于链式操作

@@ -19,7 +19,7 @@
            	<div class="container">
            		<h1 style="text-align: center"><?php echo $msg; ?></h1>
                 <p style="text-align: center">
-                    <a href="javascript:<?php echo $this -> url; ?>;">
+                    <a href="javascript:<?php echo $this -> url; ?>">
                         <span id="time">3</span>s之后跳转......
                     </a>
                 </p>
