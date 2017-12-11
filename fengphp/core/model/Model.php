@@ -199,14 +199,13 @@ use PDO;
 		/**
 		 * 功能：指定SQL语句的 order by 部分
 		 * @param $order        order by的内容
-		 * @param bool $asc     true为升序，false为降序
 		 * @return $this        对象
 		 */
-		public function order ($order, $asc = true) {
+		public function order ($order) {
 			//动作（功能）：指定order by部分
 			//动作：在 $order 不为空时才需要构造SQL order by部分
 			if ($order) {
-				$this -> order = ' order by ' . $order . ($asc ? '' : ' desc');
+				$this -> order = ' order by ' . $order;
 			}
 
 			//动作（功能）：返回一个对象，支持链式操作
