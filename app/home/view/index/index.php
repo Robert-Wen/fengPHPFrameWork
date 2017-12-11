@@ -12,10 +12,7 @@
 <body>
 	<div class="container">
 		<h2 class="page-header text-primary">Index 控制器首页模板</h2>
-        <p class="row"><?php echo $str;?></p>
-		<?php foreach ($arr as $v) { ?>
-        <p class="row"><?php echo $v;?></p>
-		<?php } ?>
+        <?php prePrint($arr);?>
 	</div>
 </body>
 </html>
