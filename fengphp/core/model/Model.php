@@ -19,6 +19,7 @@ use PDO;
 
 		private $field = '';       //查询字段
 		private $table = '';        //表名
+		private $join = '';         //select语句join部分
 		private $where = '';        //where条件
 		private $group = '';        //group by 字段
 		private $having = '';       //having条件
@@ -134,6 +135,21 @@ use PDO;
 			//动作（功能）：返回一个对象，支持链式操作
 			return $this;
 		}
+
+		/**
+		 * 功能：拼接select语句的join部分
+		 * @param $table        第二表名
+		 * @param $on           on连接条件
+		 * @return $this        对象，用于支持链式操作
+		 */
+		public function join ($table, $on) {
+			//动作（功能）：追加select语句的join部分
+			$this -> join .= " join {$table} on {$on}";
+
+			//动作（功能）：返回一个对象，支持链式操作
+			return $this;
+		}
+
 
 		/**
 		 * 功能：指定 insert, select 语句要使用的字段
@@ -293,6 +309,7 @@ use PDO;
 			$this -> order = '';
 			$this -> limit = '';
 			$this -> limitCount = '';
+			$this -> join = '';
 		}
 
 		/**
@@ -301,7 +318,7 @@ use PDO;
 		public function select () {
 			//1.将SQL语句的多个片段拼接在一起
 			$sql = 'select ' . ($this -> field ? $this -> field : '*') .
-				' from ' . $this -> table .
+				' from ' . $this -> table . $this -> join .
 				$this -> where .
 				$this -> group .
 				$this -> having .
@@ -310,6 +327,8 @@ use PDO;
 
 			//2.清空先前设置好的SQL片段，仅仅保留设置好的 table
 			$this -> resetSQL();
+
+//			prePrint($sql); return ;
 
 			//3.执行SQL语句，返回查询的结果
 			return $this -> q ($sql);

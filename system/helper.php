@@ -62,8 +62,17 @@
 		 * @param $url          '模块/控制器/方法' 形式的字符串
 		 * @return mixed        '?s=模块/控制器/方法' 形式的字符串
 		 */
-		function u ($url = '') {
-//			prePrint($url);die();
+		function u ($url = '', $params = []) {
+			//动作：将一个关联数组转化为一个url query部分
+			//功能：支持添加url query部分的参数
+			$params = http_build_query($params);
+//			preVarDump($params); return;
+
+			//动作：判断是否指定了url额外的参数
+			//功能：如果指定了额外的参数则添加前置的&；否则为空字符串
+			$query = $params ? ('&' . $params ) : '';
+
+//			preVarDump($query); return;
 
 			//动作：用 explode 将字符串拆分成数组
 			//功能：从 $url 中提取出模块、控制器和动作
@@ -78,7 +87,7 @@
 				$info[0] = $info[0] ? $info[0] : 'index';
 
 				//动作：使用当前模块、当前控制器、用户指定的动作拼接成合法的url请求
-				$res = '?s=' . MODULE . '/' . CONTROLLER . '/' . $info[0];
+				$res = '?s=' . MODULE . '/' . CONTROLLER . '/' . $info[0] . $query;
 			} else if (count($info) == 2) {
 				//传递进来控制器和动作，使用当前模块...
 
@@ -89,7 +98,7 @@
 				$info[1] = $info[1] ? $info[1] : 'index';
 
 				//动作：使用当前模块、用户指定的控制器、用户指定的动作拼接成合法的url请求
-				$res = '?s=' . MODULE . '/' . $info[0] . '/' . $info[1];
+				$res = '?s=' . MODULE . '/' . $info[0] . '/' . $info[1] . $query;
 			} else {
 				//传递进来模块、控制器和动作...
 
@@ -103,7 +112,7 @@
 				$info[2] = $info[2] ? $info[2] : 'index';
 
 				//动作：使用用户指定的模块、用户指定的控制器、用户指定的动作拼接成合法的url请求
-				$res = '?s=' . $info[0] . '/' . $info[1] . '/' . $info[2];
+				$res = '?s=' . $info[0] . '/' . $info[1] . '/' . $info[2] . $query;
 			}
 
 			//动作：返回拼接好的合法url请求
